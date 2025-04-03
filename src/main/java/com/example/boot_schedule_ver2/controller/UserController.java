@@ -1,8 +1,6 @@
 package com.example.boot_schedule_ver2.controller;
 
-import com.example.boot_schedule_ver2.dto.SignUpUserRequestDto;
-import com.example.boot_schedule_ver2.dto.SignUpUserResponseDto;
-import com.example.boot_schedule_ver2.dto.UserResponseDto;
+import com.example.boot_schedule_ver2.dto.*;
 import com.example.boot_schedule_ver2.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -44,6 +42,14 @@ public class UserController {
         UserResponseDto userResponseDto = userService.findById(id);
 
         return new ResponseEntity<>(userResponseDto, HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody UpdateUserEmailRequestDto requestDto) {
+
+        userService.update(id, requestDto);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

@@ -1,13 +1,13 @@
 package com.example.boot_schedule_ver2.service;
 
 import com.example.boot_schedule_ver2.dto.SignUpUserResponseDto;
+import com.example.boot_schedule_ver2.dto.UpdateUserEmailRequestDto;
 import com.example.boot_schedule_ver2.dto.UserResponseDto;
 import com.example.boot_schedule_ver2.entity.User;
 import com.example.boot_schedule_ver2.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -45,10 +45,6 @@ public class UserService {
 
         Optional<User> optionalUser = userRepository.findById(id);
 
-        if (optionalUser.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + id);
-        }
-
         User findUser = optionalUser.get();
 
         return new UserResponseDto(
@@ -58,6 +54,14 @@ public class UserService {
                 findUser.getCreateDaytime(),
                 findUser.getUpdateDaytime()
                 );
+    }
+
+    @Transactional
+    public void update(Long id, UpdateUserEmailRequestDto requestDto) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 데이터가 없습니다. id=" + id));
+
+        user.update(requestDto.getEmail());
     }
 
 }
