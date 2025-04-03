@@ -19,6 +19,7 @@ public class ScheduleService {
 
         scheduleRepository.save(schedule);
 
+        //만들어진 일정의 id,작성자명, 할일 제목, 할일 내용, 작성일, 수정일 출력
         return new ScheduleResponseDto(schedule.getId(), schedule.getUserName(), schedule.getTodoTitle(), schedule.getTodoContents(), schedule.getCreateDaytime(), schedule.getUpdateDaytime());
     }
 

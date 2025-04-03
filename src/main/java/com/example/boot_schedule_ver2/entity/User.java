@@ -17,5 +17,13 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String email;
 
+    public User() {
+    }
+
+    public User(String userName, String email) {
+        this.userName = userName;
+        this.email = email;
+    }
+
 
 }
