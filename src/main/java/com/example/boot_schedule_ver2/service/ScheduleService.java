@@ -6,6 +6,8 @@ import com.example.boot_schedule_ver2.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ScheduleService {
@@ -17,6 +19,26 @@ public class ScheduleService {
 
         scheduleRepository.save(schedule);
 
-        return new ScheduleResponseDto(schedule.getId(), schedule.getUserName(), schedule.getTodoTitle(), schedule.getTodoContents());
+        return new ScheduleResponseDto(schedule.getId(), schedule.getUserName(), schedule.getTodoTitle(), schedule.getTodoContents(), schedule.getCreateDaytime(), schedule.getUpdateDaytime());
+    }
+
+    public List<ScheduleResponseDto> findAll() {
+        return scheduleRepository.findAll()
+                .stream()
+                .map(ScheduleResponseDto::toDto)
+                .toList();
+    }
+
+    public ScheduleResponseDto findById(Long id) {
+        Schedule findBoard = scheduleRepository.findByIdOrElseThrow(id);
+
+        return new ScheduleResponseDto(
+                findBoard.getId(),
+                findBoard.getUserName(),
+                findBoard.getTodoTitle(),
+                findBoard.getTodoContents(),
+                findBoard.getCreateDaytime(),
+                findBoard.getUpdateDaytime()
+        );
     }
 }
