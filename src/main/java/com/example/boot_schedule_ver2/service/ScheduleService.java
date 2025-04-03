@@ -1,8 +1,10 @@
 package com.example.boot_schedule_ver2.service;
 
 import com.example.boot_schedule_ver2.dto.ScheduleResponseDto;
+import com.example.boot_schedule_ver2.dto.UpdateScheduleRequestDto;
 import com.example.boot_schedule_ver2.entity.Schedule;
 import com.example.boot_schedule_ver2.repository.ScheduleRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +43,14 @@ public class ScheduleService {
                 findBoard.getCreateDaytime(),
                 findBoard.getUpdateDaytime()
         );
+    }
+
+    @Transactional
+    public void update(Long id, UpdateScheduleRequestDto requestDto) {
+        Schedule schedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 일정이 없습니다. id=" + id));
+
+        schedule.update(requestDto.getTodoTitle(), requestDto.getTodoContents());
     }
 
     public void delete(Long id) {
