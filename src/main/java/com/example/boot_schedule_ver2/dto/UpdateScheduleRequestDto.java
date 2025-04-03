@@ -9,6 +9,7 @@ public class UpdateScheduleRequestDto {
 
     private final String todoContents;
 
+
     public UpdateScheduleRequestDto(String todoTitle, String todoContents) {
         this.todoTitle = todoTitle;
         this.todoContents = todoContents;

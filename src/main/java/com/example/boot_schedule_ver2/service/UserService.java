@@ -7,7 +7,9 @@ import com.example.boot_schedule_ver2.entity.User;
 import com.example.boot_schedule_ver2.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,9 +21,9 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public SignUpUserResponseDto signUp(String userName, String email) {
+    public SignUpUserResponseDto signUp(String userName, String email, String password) {
 
-        User user = new User(userName, email);
+        User user = new User(userName, email, password);
 
         User savedUser = userRepository.save(user);
 
@@ -61,6 +63,11 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 ID의 데이터가 없습니다. id=" + id));
 
+        User findUser = userRepository.findByIdOrElseThrow(id);
+
+        if (!user.getPassword().equals(requestDto.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
+        }
         user.update(requestDto.getEmail());
     }
 
