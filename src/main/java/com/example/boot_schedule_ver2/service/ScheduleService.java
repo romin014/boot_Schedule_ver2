@@ -41,4 +41,11 @@ public class ScheduleService {
                 findBoard.getUpdateDaytime()
         );
     }
+
+    public void delete(Long id) {
+
+        Schedule findSchedule = scheduleRepository.findByIdOrElseThrow(id);
+
+        scheduleRepository.delete(findSchedule);
+    }
 }
