@@ -64,4 +64,11 @@ public class UserService {
         user.update(requestDto.getEmail());
     }
 
+    public void delete(Long id) {
+
+        User findUser = userRepository.findByIdOrElseThrow(id);
+
+        userRepository.delete(findUser);
+    }
+
 }
