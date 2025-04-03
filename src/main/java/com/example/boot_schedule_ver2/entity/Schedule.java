@@ -20,6 +20,10 @@ public class Schedule extends BaseEntity {
     @Column(columnDefinition = "longtext")
     private String todoContents;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Schedule(){
 
     }
