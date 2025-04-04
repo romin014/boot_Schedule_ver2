@@ -21,11 +21,6 @@ public class UserController {
     private final UserService userService;
     private final HttpSession session;
 
-    //인증에 성공하면:
-    //세션에 사용자 ID와 사용자 이름을 저장합니다.
-    //HTTP 상태 코드 200 (OK)과 함께 "로그인 되었습니다." 메시지를 반환합니다.
-    //인증에 실패하면 (IllegalArgumentException 발생 시):
-    //HTTP 상태 코드 401 (Unauthorized)과 함께 오류 메시지를 반환합니다.
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody SignUpUserRequestDto requestDto) {
         //SignUpUserRequestDto를 통해 로그인 요청받음
