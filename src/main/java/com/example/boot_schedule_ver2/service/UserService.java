@@ -1,5 +1,6 @@
 package com.example.boot_schedule_ver2.service;
 
+import com.example.boot_schedule_ver2.dto.SignUpUserRequestDto;
 import com.example.boot_schedule_ver2.dto.SignUpUserResponseDto;
 import com.example.boot_schedule_ver2.dto.UpdateUserEmailRequestDto;
 import com.example.boot_schedule_ver2.dto.UserResponseDto;
@@ -35,6 +36,25 @@ public class UserService {
                 savedUser.getUpdateDaytime()
         );
     }
+
+    public SignUpUserResponseDto login(SignUpUserRequestDto request) {
+        Optional<User> optionalUser = userRepository.findByEmail(request.getEmail());
+        User user = optionalUser.orElseThrow(() -> new IllegalArgumentException("이메일 주소가 존재하지 않습니다."));
+
+        if (!user.getPassword().equals(request.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        return new SignUpUserResponseDto(
+                user.getId(),
+                user.getUserName(),
+                user.getEmail(),
+                user.getCreateDaytime(),
+                user.getUpdateDaytime()
+        );
+    }
+
+
 
     public List<UserResponseDto> findAll() {
         return userRepository.findAll()
@@ -79,3 +99,4 @@ public class UserService {
     }
 
 }
+
