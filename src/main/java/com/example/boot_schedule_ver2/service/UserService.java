@@ -32,12 +32,14 @@ public class UserService {
                 savedUser.getId(),
                 savedUser.getUserName(),
                 savedUser.getEmail(),
+                null,
                 savedUser.getCreateDaytime(),
                 savedUser.getUpdateDaytime()
         );
     }
 
     public SignUpUserResponseDto login(SignUpUserRequestDto request) {
+
         Optional<User> optionalUser = userRepository.findByEmail(request.getEmail());
         User user = optionalUser.orElseThrow(() -> new IllegalArgumentException("이메일 주소가 존재하지 않습니다."));
 
@@ -49,11 +51,11 @@ public class UserService {
                 user.getId(),
                 user.getUserName(),
                 user.getEmail(),
+                null,
                 user.getCreateDaytime(),
                 user.getUpdateDaytime()
         );
     }
-
 
 
     public List<UserResponseDto> findAll() {

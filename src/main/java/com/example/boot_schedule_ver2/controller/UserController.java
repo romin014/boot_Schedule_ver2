@@ -21,13 +21,21 @@ public class UserController {
     private final UserService userService;
     private final HttpSession session;
 
+    //인증에 성공하면:
+    //세션에 사용자 ID와 사용자 이름을 저장합니다.
+    //HTTP 상태 코드 200 (OK)과 함께 "로그인 되었습니다." 메시지를 반환합니다.
+    //인증에 실패하면 (IllegalArgumentException 발생 시):
+    //HTTP 상태 코드 401 (Unauthorized)과 함께 오류 메시지를 반환합니다.
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody SignUpUserRequestDto requestDto) {
+        //SignUpUserRequestDto를 통해 로그인 요청받음
         try {
+            //유저 인증
             SignUpUserResponseDto responseDto = userService.login(requestDto);
 
-            session.setAttribute("userId", responseDto.getId());
-            session.setAttribute("username", responseDto.getUserName());
+            //세션에 사용자의 이메일, 비밀번호 저장
+            session.setAttribute("email", responseDto.getEmail());
+            session.setAttribute("password", responseDto.getPassword());
 
             return ResponseEntity.ok("로그인 되었습니다.");
         } catch (IllegalArgumentException e) {
@@ -37,8 +45,10 @@ public class UserController {
 
     @PostMapping("/logout")
     public ResponseEntity<SignUpUserResponseDto> logout() {
+        //세션 무효화
         session.invalidate();
-        SignUpUserResponseDto responseDto = new SignUpUserResponseDto(null, "Logout", "Logout successful", null, null);
+
+        SignUpUserResponseDto responseDto = new SignUpUserResponseDto(null, "Logout", "Logout successful", null, null, null);
         return ResponseEntity.ok(responseDto);
     }
 
